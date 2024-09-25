@@ -1,0 +1,9 @@
+header,
+nav {
+    z-index: 100001 !important;
+}
+
+.swiper-pagination {
+    position: relative !important;
+    margin-top: 14px;
+}
