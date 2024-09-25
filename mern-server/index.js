@@ -17,6 +17,7 @@ const corsOptions = {
         "http://192.168.1.22:5173",
         "http://localhost:5173",
         "http://172.172.9.154:5173",
+        "https://book-store-beta-tawny.vercel.app",
     ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
