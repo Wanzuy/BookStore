@@ -3,12 +3,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contects/AuthProvider";
 import googleLogo from "../assets/google-logo.svg";
 import { notification } from "antd";
-import banner from "../assets/salebook.png";
-
 
 function Signin() {
     const { loginUserHandler } = useContext(AuthContext);
-
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -85,7 +82,6 @@ function Signin() {
                                         Đăng nhập
                                     </button>
                                 </form>
-
                             </div>
                             <hr />
                             <div className="flex w-full items-center flex-col mt-5 gap-3">

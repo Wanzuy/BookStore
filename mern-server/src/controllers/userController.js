@@ -1,60 +1,77 @@
 import User from "../models/userModel.js";
 import PersonalInfo from "../models/personalInfoModel.js";
-import asyncHandler from 'express-async-handler';
+import asyncHandler from "express-async-handler";
 
 // Lấy thông tin người dùng
 export const getUserProfile = async (req, res) => {
-    const user = await User.findById(req.user.id);
-    const personalInfo = await PersonalInfo.findOne({ user: req.user.id });
+    const user = req.user;
+    const userId = user._id;
 
-    if (user && personalInfo) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            personalInfo,
-        });
-    } else {
-        res.status(404).json({ message: "Không tìm thấy người dùng" });
+    // Kiểm tra xem người dùng có tồn tại không
+    if (!user) {
+        return res.status(401).json({ error: "Không được phép truy cập!" });
+    }
+
+    // Lấy thông tin cá nhân của người dùng
+    try {
+        const info = await PersonalInfo.findOne({ user: userId }).populate(
+            "user",
+            "name email role"
+        );
+        if (!info) {
+            return res
+                .status(404)
+                .json({ error: "Không tìm thấy thông tin cá nhân!" });
+        }
+
+        const userInfo = {
+            _id: info.user._id,
+            name: info.user.name,
+            email: info.user.email,
+            birthday: info.birthday,
+            gender: info.gender,
+            phoneNumber: info.phoneNumber,
+            address: info.address,
+        };
+
+        return res.status(200).json(userInfo);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Lỗi máy chủ nội bộ!" });
     }
 };
 
 // Cập nhật thông tin người dùng
 export const updateUserProfile = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
+    const { email, address, phoneNumber, fullName, gender } = req.body;
 
-    if (user) {
-        user.name = req.body.name || user.name;
-        user.email = req.body.email || user.email;
-        if (req.body.password) {
-            user.password = req.body.password;
-        }
+    const user = req.user;
+    const userId = user._id.toString();
 
-        const updatedUser = await user.save();
-
-        const personalInfo = await PersonalInfo.findOne({ user: req.user._id });
-        if (personalInfo) {
-            personalInfo.birthday = req.body.birthday || personalInfo.birthday;
-            personalInfo.gender = req.body.gender || personalInfo.gender;
-            personalInfo.phoneNumber = req.body.phoneNumber || personalInfo.phoneNumber;
-            personalInfo.address = req.body.address || personalInfo.address;
-
-            await personalInfo.save();
-        }
-
-        res.json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            email: updatedUser.email,
-            role: updatedUser.role,
-            token: generateToken(updatedUser._id),
-            personalInfo,
-        });
-    } else {
-        res.status(404);
-        throw new Error('User not found');
+    if (!user) {
+        return res.status(401).json({ error: "Không được phép truy cập!" });
     }
+
+    // Chuẩn bị dữ liệu cập nhật
+    const updateData = {
+        email,
+        address,
+        phoneNumber,
+        fullName,
+        gender,
+    };
+
+    // Kiểm tra dữ liệu cập nhật
+    const error = validateData(updateData);
+    if (error) {
+        return res.status(400).json({ error });
+    }
+
+    await PersonalInfo.findOneAndUpdate({ user: userId }, updateData, {
+        new: true,
+    });
+
+    return res.status(200).json({ message: "Cập nhật thông tin thành công!" });
 });
 
 // Thay đổi vai trò người dùng
@@ -73,7 +90,7 @@ export const changeUserRole = asyncHandler(async (req, res) => {
         });
     } else {
         res.status(404);
-        throw new Error('User not found');
+        throw new Error("User not found");
     }
 });
 
@@ -84,9 +101,36 @@ export const changeUserPassword = asyncHandler(async (req, res) => {
     if (user && (await user.matchPassword(req.body.currentPassword))) {
         user.password = req.body.newPassword;
         await user.save();
-        res.json({ message: 'Password updated successfully' });
+        res.json({ message: "Password updated successfully" });
     } else {
         res.status(400);
-        throw new Error('Current password is incorrect');
+        throw new Error("Current password is incorrect");
     }
 });
+
+//Xác thực dữ liệu
+function validateData(data) {
+    const { email, address, phoneNumber, fullName, gender } = data;
+
+    // Kiểm tra giới tính hợp lệ
+    const validGenders = ["male", "female", "other"];
+    if (!validGenders.includes(gender)) {
+        return "Giới tính không hợp lệ!";
+    }
+
+    // Kiểm tra số điện thoại hợp lệ
+    const regexPhoneNum = /^(03|05|07|08|09)\d{8}$/;
+    if (!regexPhoneNum.test(phoneNumber)) {
+        return "Số điện thoại không hợp lệ!";
+    }
+
+    //kiểm tra bỏ trống trường thông tin
+    if (!email || !address || !fullName) {
+        return "Vui lòng điền đầy đủ thông tin!";
+    }
+
+    if (!moment(birthday, "DD/MM/YYYY", true).isValid()) {
+        return "Ngày sinh không hợp lệ!";
+    }
+    return null;
+}
