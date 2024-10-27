@@ -6,10 +6,7 @@ import { notification } from "antd";
 
 const SignUp = () => {
     const { createUser } = useContext(AuthContext);
-    const location = useLocation();
     const navigate = useNavigate();
-
-    const from = location.state?.from.pathname || "/";
 
     const handleSignUp = async (event) => {
         event.preventDefault();

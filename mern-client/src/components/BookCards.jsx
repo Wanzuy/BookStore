@@ -40,6 +40,10 @@ const BookCards = ({ headline, books }) => {
                             spaceBetween: 40,
                         },
                         1024: {
+                            slidesPerView: 3,
+                            spaceBetween: 50,
+                        },
+                        1280: {
                             slidesPerView: 4,
                             spaceBetween: 50,
                         },
@@ -52,7 +56,7 @@ const BookCards = ({ headline, books }) => {
                             <Link to={`/book/${book._id}`}>
                                 <div className="relative p-[54px] rounded-md shadow-lg border border-[#EAE8DF]">
                                     <img
-                                        className="w-full h-[318px] shadow-2xl object-cover transform transition-transform duration-300 hover:scale-105"
+                                        className="w-full h-[318px] xl:h-[418px] shadow-2xl object-cover transform transition-transform duration-300 hover:scale-105"
                                         src={book.imageUrl}
                                         alt={book.bookTitle}
                                     />

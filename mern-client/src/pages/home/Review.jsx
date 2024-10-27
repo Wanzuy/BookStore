@@ -19,10 +19,10 @@ import { Pagination } from "swiper/modules";
 const Review = () => {
     return (
         <div className="review my-12 px-4 lg:px-24">
-            <h2 class="flex text-2xl text-center items-center font-bold text-[#ED553B]">
-                <span class="flex-1 block w-full h-[3px] bg-black "></span>
+            <h2 className="flex text-2xl text-center items-center font-bold text-[#ED553B]">
+                <span className="flex-1 block w-full h-[3px] bg-black "></span>
                 <span className="px-8">ĐÁNH GIÁ</span>
-                <span class="flex-1 block w-full h-[3px] bg-black"></span>
+                <span className="flex-1 block w-full h-[3px] bg-black"></span>
             </h2>
             <div>
                 <Swiper

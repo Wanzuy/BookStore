@@ -22,9 +22,10 @@ const AuthProvider = ({ children }) => {
     const loginUserHandler = async (email, password) => {
         try {
             const data = await loginUser(email, password);
-            setUser(data);
-            localStorage.setItem("user", JSON.stringify(data));
-            localStorage.setItem("token", data.token);
+            const { token, ...userData } = data;
+            setUser(userData);
+            localStorage.setItem("user", JSON.stringify(userData));
+            localStorage.setItem("token", token);
             return data;
         } catch (error) {
             throw new Error(error.message);

@@ -15,11 +15,11 @@ const Shop = () => {
     }, []);
 
     return (
-        <div className="mt-24 px-4 lg:px-24">
+        <div className="mt-10 px-4 lg:px-24">
             <h2 className="text-5xl font-bold text-center">
                 All Books are here
             </h2>
-            <div className="my-12 grid  gap-8 lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 grid-cols-1">
+            <div className="my-12 grid  gap-8 xl:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 grid-cols-1">
                 {books.map((book) => (
                     <Card className="">
                         <img
@@ -36,7 +36,7 @@ const Shop = () => {
                         <p className="font-normal text-gray-700 dark:text-gray-400 overflow-hidden overflow-ellipsis line-clamp-2">
                             {book.bookDescription}
                         </p>
-                        <button className="bg-blue-700 font-semibold text-while py-2 rounded">
+                        <button className="bg-[#ED553B] font-semibold text-white  py-2 rounded">
                             Buy Now
                         </button>
                     </Card>

@@ -3,7 +3,6 @@ import App from "../App";
 import Home from "../pages/home/Home";
 import Shop from "../pages/shop/Shop";
 import About from "../pages/home/About";
-import Blog from "../components/Blog";
 import SingleBook from "../pages/shop/SingleBook";
 import DashboardLayout from "../pages/dashboard/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -12,16 +11,20 @@ import ManageBooks from "../pages/dashboard/ManageBooks";
 import EditBooks from "../pages/dashboard/EditBooks";
 import SignUp from "../components/SignUp";
 import Signin from "../components/Signin";
-import ProtectedRoute from "../routers/ProtectedRoute";
-import AdminRoute from "./AdminRoute";
-
+import Contact from "../components/Contact";
+import ProtectedAdminRoute from "./ProtectedAdminRoute";
+import DefaultLayout from "../pages/userInfor/DefaultLayout";
+import GeneralInformation from "../pages/userInfor/GeneralInformation";
+import Infor from "../pages/userInfor/Infor";
+import FavouriteList from "../pages/FavouriteList";
 
 const isAuthenticated = () => {
     const user = localStorage.getItem("user");
-    return user !== null && user !== "null";
+    return user && user !== "null";
 };
 
-const router = createBrowserRouter([
+// Định nghĩa các router của user
+const userRoutes = [
     {
         path: "/",
         element: <App />,
@@ -39,8 +42,28 @@ const router = createBrowserRouter([
                 element: <About />,
             },
             {
-                path: "/blog",
-                element: <Blog />,
+                path: "/contact",
+                element: <Contact />,
+            },
+            {
+                path: "/favourite-list",
+                element: <FavouriteList />,
+            },
+            {
+                path: "/user/acount",
+                element: (
+                    <ProtectedAdminRoute element={DefaultLayout} role="user" />
+                ),
+                children: [
+                    {
+                        path: "/user/acount",
+                        element: <GeneralInformation />,
+                    },
+                    {
+                        path: "/user/acount/user-info",
+                        element: <Infor />,
+                    },
+                ],
             },
             {
                 path: "/sign-up",
@@ -58,29 +81,43 @@ const router = createBrowserRouter([
             },
         ],
     },
+];
+
+// Định nghĩa các router của admin
+const adminRoutes = [
     {
         path: "/admin/dashboard",
-        element: <ProtectedRoute element={DashboardLayout} />,
+        element: <ProtectedAdminRoute element={DashboardLayout} role="admin" />,
         children: [
             {
                 path: "/admin/dashboard",
-                element: <AdminRoute element={Dashboard} />,
+                element: (
+                    <ProtectedAdminRoute element={Dashboard} role="admin" />
+                ),
             },
             {
                 path: "/admin/dashboard/upload",
-                element: <AdminRoute element={UploadBook} />,
+                element: (
+                    <ProtectedAdminRoute element={UploadBook} role="admin" />
+                ),
             },
             {
                 path: "/admin/dashboard/manage",
-                element: <AdminRoute element={ManageBooks} />,
+                element: (
+                    <ProtectedAdminRoute element={ManageBooks} role="admin" />
+                ),
             },
             {
                 path: "/admin/dashboard/edit-book/:id",
-                element: <AdminRoute element={EditBooks} />,
+                element: (
+                    <ProtectedAdminRoute element={EditBooks} role="admin" />
+                ),
             },
         ],
     },
-]);
+];
+
+// Kết hợp các router của user và admin
+const router = createBrowserRouter([...userRoutes, ...adminRoutes]);
 
 export default router;
-
