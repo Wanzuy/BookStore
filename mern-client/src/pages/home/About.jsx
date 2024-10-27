@@ -97,20 +97,23 @@ const About = () => {
                     <h2 className="text-3xl font-semibold text-[#ED553B]">
                         Our Commitment
                     </h2>
-                    <p className="mt-[44px] text-[20px] text-justify italic">
-                        At Neth BookPoint, we are committed to providing a
-                        welcoming and inspiring environment for all book
-                        enthusiasts. Each of our branches is staffed with
-                        knowledgeable and friendly team members ready to assist
-                        you in finding the perfect book. Whether you're looking
-                        for the latest bestseller, a rare find, or a cozy place
-                        to read, Neth BookPoint is your destination. We believe
-                        in the power of reading to transform lives and build
-                        community. Join us at one of our branches or explore our
-                        offerings online. We're here to support your reading
-                        journey and make your book shopping experience enjoyable
-                        and fulfilling.
+                    <p class="text-gray-600 mb-8 max-w-xl mx-auto">
+                        Chúng tôi cam kết mang đến cho bạn những cuốn sách chất lượng, giá cả hợp lý và dịch vụ khách hàng tận tình. Mỗi sản phẩm đều được chọn lọc kỹ càng để đảm bảo rằng bạn sẽ có trải nghiệm đọc tuyệt vời nhất.
                     </p>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <div class="bg-white shadow-lg rounded-lg p-6 max-w-xs w-full text-center">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Chất Lượng Sản Phẩm</h3>
+                            <p class="text-gray-600">Tất cả sách được kiểm tra kỹ càng trước khi đến tay bạn.</p>
+                        </div>
+                        <div class="bg-white shadow-lg rounded-lg p-6 max-w-xs w-full text-center">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Giá Cả Hợp Lý</h3>
+                            <p class="text-gray-600">Cam kết mang đến giá cả cạnh tranh, phù hợp với mọi đối tượng.</p>
+                        </div>
+                        <div class="bg-white shadow-lg rounded-lg p-6 max-w-xs w-full text-center">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Dịch Vụ Khách Hàng</h3>
+                            <p class="text-gray-600">Luôn sẵn sàng hỗ trợ và tư vấn tận tình khi bạn cần.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
