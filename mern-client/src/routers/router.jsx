@@ -16,10 +16,11 @@ import ProtectedAdminRoute from "./ProtectedAdminRoute";
 import DefaultLayout from "../pages/userInfor/DefaultLayout";
 import GeneralInformation from "../pages/userInfor/GeneralInformation";
 import Infor from "../pages/userInfor/Infor";
+import FavouriteList from "../pages/FavouriteList";
 
 const isAuthenticated = () => {
     const user = localStorage.getItem("user");
-    return user !== "null";
+    return user && user !== "null";
 };
 
 // Định nghĩa các router của user
@@ -45,8 +46,14 @@ const userRoutes = [
                 element: <Contact />,
             },
             {
+                path: "/favourite-list",
+                element: <FavouriteList />,
+            },
+            {
                 path: "/user/acount",
-                element: <ProtectedAdminRoute element={DefaultLayout} role="user" />,
+                element: (
+                    <ProtectedAdminRoute element={DefaultLayout} role="user" />
+                ),
                 children: [
                     {
                         path: "/user/acount",
@@ -55,7 +62,7 @@ const userRoutes = [
                     {
                         path: "/user/acount/user-info",
                         element: <Infor />,
-                    }
+                    },
                 ],
             },
             {
@@ -84,28 +91,33 @@ const adminRoutes = [
         children: [
             {
                 path: "/admin/dashboard",
-                element: <ProtectedAdminRoute element={Dashboard} role="admin" />,
+                element: (
+                    <ProtectedAdminRoute element={Dashboard} role="admin" />
+                ),
             },
             {
                 path: "/admin/dashboard/upload",
-                element: <ProtectedAdminRoute element={UploadBook} role="admin" />,
+                element: (
+                    <ProtectedAdminRoute element={UploadBook} role="admin" />
+                ),
             },
             {
                 path: "/admin/dashboard/manage",
-                element: <ProtectedAdminRoute element={ManageBooks} role="admin" />,
+                element: (
+                    <ProtectedAdminRoute element={ManageBooks} role="admin" />
+                ),
             },
             {
                 path: "/admin/dashboard/edit-book/:id",
-                element: <ProtectedAdminRoute element={EditBooks} role="admin" />,
+                element: (
+                    <ProtectedAdminRoute element={EditBooks} role="admin" />
+                ),
             },
         ],
     },
 ];
 
 // Kết hợp các router của user và admin
-const router = createBrowserRouter([
-    ...userRoutes,
-    ...adminRoutes,
-]);
+const router = createBrowserRouter([...userRoutes, ...adminRoutes]);
 
 export default router;
